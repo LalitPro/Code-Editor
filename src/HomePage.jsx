@@ -98,26 +98,26 @@ function HomePage() {
       {/* Navbar */}
       <nav
         ref={headerRef}
-        className="relative z-10 px-6 md:px-12 py-6 flex items-center justify-between backdrop-blur-sm border-b border-gray-800/50"
+        className="relative z-10 flex items-center justify-center px-6 py-6 border-b md:px-12 md:ustify-between backdrop-blur-sm border-gray-800/50"
       >
         <a
           href="/"
-          className="text-2xl font-bold mb-4 md:mb-0 flex items-center gap-2"
+          className="flex items-center gap-2 mb-4 text-2xl font-bold text-center md:mb-0"
         >
           <LuLayers />
           AnkiEditor
         </a>
 
-        <div className="hidden space-y-4 md:space-y-0 md:space-x-8 md:flex flex-col md:flex-row items-center">
-          <a href="/features" className="hover:text-blue-400 transition-colors">
+        <div className="flex-col items-center hidden space-y-4 md:space-y-0 md:space-x-8 md:flex md:flex-row">
+          <a href="/features" className="transition-colors hover:text-blue-400">
             Features
           </a>
-          <a href="/docs" className="hover:text-blue-400 transition-colors">
+          <a href="/docs" className="transition-colors hover:text-blue-400">
             Docs
           </a>
           <a
             href="/docs"
-            className="bg-blue-600 px-6 py-2 rounded-full hover:bg-blue-700 transition-colors"
+            className="px-6 py-2 transition-colors bg-blue-600 rounded-full hover:bg-blue-700"
           >
             Get Started
           </a>
@@ -125,33 +125,33 @@ function HomePage() {
 
         <IoMdMenu
           onClick={() => setIsMobileShowMenu(!isMobileShowMenu)}
-          className="block text-2xl hover:scale-125 duration-150 md:hidden"
+          className="fixed top-0 right-0 block text-2xl duration-150 m-7 hover:scale-125 md:hidden"
         />
       </nav>
 
       {/* Mobile Menu */}
       {isMobileShowMenu && (
-        <div className="w-60 duration-75 ease-in-out rounded-3xl -mr-5 flex flex-col items-end pr-20 py-20 ml-20 bg-zinc-900 h-screen fixed top-0 right-0 bg-black/50 backdrop-blur-sm z-50">
+        <div className="fixed top-0 right-0 z-50 flex flex-col items-end h-screen py-20 pr-20 ml-20 -mr-5 duration-75 ease-in-out w-60 rounded-3xl bg-zinc-900 bg-black/50 backdrop-blur-sm">
           <IoMdMenu
             onClick={() => setIsMobileShowMenu(!isMobileShowMenu)}
-            className="block mb-10 text-center text-5xl hover:scale-125 duration-150 md:hidden"
+            className="absolute top-0 left-0 block text-2xl duration-150 m-7 hover:scale-125 md:hidden"
           />
-          <div className="flex flex-col items-center justify-center gap-5">
+          <div className="flex flex-col items-start justify-center gap-7">
             <a
               href="/features"
-              className="hover:text-blue-400 text-2xl transition-colors"
+              className="text-2xl transition-colors border-b-2 hover:text-blue-400"
             >
               Features
             </a>
             <a
               href="/docs"
-              className="hover:text-blue-400 text-2xl transition-colors"
+              className="text-2xl transition-colors border-b-2 hover:text-blue-400"
             >
               Docs
             </a>
             <a
               href="/docs"
-              className="hover:text-blue-400 text-2xl transition-colors"
+              className="text-2xl transition-colors border-b-2 hover:text-blue-400"
             >
               Get Started
             </a>
@@ -164,22 +164,22 @@ function HomePage() {
         ref={contentRef}
         className="relative z-10 flex flex-col items-center justify-center min-h-[calc(100vh-80px)] px-6 py-12"
       >
-        <h1 className="text-5xl md:text-8xl font-bold text-center mb-6 leading-tight">
+        <h1 className="mb-6 text-5xl font-bold leading-tight text-center md:text-8xl">
           The ANKI Code Editor
         </h1>
 
-        <p className="text-lg md:text-xl text-gray-400 text-center max-w-2xl mb-12 font-mono">
+        <p className="max-w-2xl mb-12 font-mono text-lg text-center text-gray-400 md:text-xl">
           Built to make you extraordinarily productive,
           <br />
           AnkiEditor is the best way to code on Mobile.
         </p>
 
         {/* Download Buttons */}
-        <div className="flex flex-col md:flex-row gap-4 items-center">
+        <div className="flex flex-col items-center gap-4 md:flex-row">
           <a
             href="./ankieditor.apk"
             download="AnkiEditor.apk"
-            className="group bg-white/10 backdrop-blur px-6 py-3 rounded-lg flex items-center gap-2 hover:bg-white/20 transition-colors border border-white/20"
+            className="flex items-center gap-2 px-6 py-3 transition-colors border rounded-lg group bg-white/10 backdrop-blur hover:bg-white/20 border-white/20"
           >
             <IoLogoAndroid className="text-2xl" />
             DOWNLOAD FOR ANDROID
@@ -188,7 +188,7 @@ function HomePage() {
           <a
             target="_blank"
             href="https://www.youtube.com/watch?v=X7RVmRd09zk"
-            className="group px-6 py-3 rounded-lg flex items-center gap-2 hover:bg-white/10 transition-colors"
+            className="flex items-center gap-2 px-6 py-3 transition-colors rounded-lg group hover:bg-white/10"
           >
             <svg
               className="w-6 h-6"
@@ -214,12 +214,12 @@ function HomePage() {
         </div>
 
         {/* Code Editor Preview */}
-        <div className="mt-16 w-full max-w-6xl mx-auto rounded-lg overflow-hidden border border-gray-800">
-          <div className="bg-black/30 backdrop-blur p-2 flex items-center justify-between">
+        <div className="w-full max-w-6xl mx-auto mt-16 overflow-hidden border border-gray-800 rounded-lg">
+          <div className="flex items-center justify-between p-2 bg-black/30 backdrop-blur">
             <div className="flex gap-2">
-              <div className="w-3 h-3 rounded-full bg-red-500"></div>
-              <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
-              <div className="w-3 h-3 rounded-full bg-green-500"></div>
+              <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+              <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
+              <div className="w-3 h-3 bg-green-500 rounded-full"></div>
             </div>
 
             {/* Tab Menu */}
@@ -236,26 +236,31 @@ function HomePage() {
                     }`}
                 >
                   {icon}
-                  <span className="text-sm hidden md:block">{title}</span>
+                  <span className="hidden text-sm md:block">{title}</span>
                 </button>
               ))}
             </div>
           </div>
 
-          <div className="bg-black/20 backdrop-blur-xl p-4 md:p-8">
+          <div className="p-4 bg-black/20 backdrop-blur-xl md:p-8">
             <div className="h-[200px] md:h-[700px] w-full">
               <img
                 src={previewData[activeTab].image}
                 alt={`${previewData[activeTab].title} Preview`}
-                className="w-full object-cover rounded-md transition-opacity duration-300"
+                className="object-cover w-full transition-opacity duration-300 rounded-md"
                 loading="lazy"
               />
             </div>
           </div>
         </div>
-        <p>
-          Anki Code is best code editor for mobile which gives you free
-          subdomain and hosting free code editor
+
+        <p className="max-w-2xl mb-12 font-mono text-lg text-center text-gray-400 md:text-xl">
+          Anki Code is an excellent mobile code editor that stands out for its
+          unique features. It provides users with a free subdomain and hosting,
+          making it an ideal choice for developers who want to code and deploy
+          projects directly from their mobile devices without incurring
+          additional costs. This combination of convenience and functionality
+          makes Anki Code one of the best code editors for mobile users.
         </p>
       </main>
     </div>
