@@ -98,7 +98,7 @@ function HomePage() {
       {/* Navbar */}
       <nav
         ref={headerRef}
-        className="relative z-10 flex items-center justify-center px-6 py-6 border-b md:px-12 md:ustify-between backdrop-blur-sm border-gray-800/50"
+        className="relative z-10 flex items-center justify-center px-6 py-6 border-b md:justify-between md:px-12 md:ustify-between backdrop-blur-sm border-gray-800/50"
       >
         <a
           href="/"
@@ -254,7 +254,7 @@ function HomePage() {
           </div>
         </div>
 
-        <p className="max-w-2xl mb-12 font-mono text-lg text-center text-gray-400 md:text-xl">
+        <p className="max-w-4xl my-12 font-mono text-lg text-center text-gray-400 md:text-xl">
           Anki Code is an excellent mobile code editor that stands out for its
           unique features. It provides users with a free subdomain and hosting,
           making it an ideal choice for developers who want to code and deploy
