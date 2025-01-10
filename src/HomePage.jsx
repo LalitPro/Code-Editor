@@ -1,14 +1,12 @@
-import { useEffect, useRef, useState } from "react";
-import gsap from "gsap";
+import { useState } from "react";
+import { motion } from "framer-motion";
 import { LuLayers } from "react-icons/lu";
 import { IoLogoAndroid } from "react-icons/io";
 import { FaHtml5, FaCss3Alt, FaJs } from "react-icons/fa";
 import { IoMdMenu } from "react-icons/io";
+import CustomCursor from "./CustomCursor";
 
 function HomePage() {
-  const gradientRef = useRef();
-  const headerRef = useRef();
-  const contentRef = useRef();
   const [activeTab, setActiveTab] = useState("html");
   const [isMobileShowMenu, setIsMobileShowMenu] = useState(false);
 
@@ -30,65 +28,12 @@ function HomePage() {
     },
   };
 
-  useEffect(() => {
-    // GSAP animations
-    const tl = gsap.timeline({
-      defaults: {
-        ease: "power3.out",
-        duration: 0.8,
-      },
-    });
-
-    tl.from(contentRef.current.children, {
-      y: 30,
-      opacity: 0,
-      stagger: 0.15,
-      duration: 0.5,
-      clearProps: "all",
-    }).from(
-      gradientRef.current,
-      {
-        opacity: 0,
-        scale: 0.9,
-        duration: 1,
-        clearProps: "all",
-      },
-      "-=0.5"
-    );
-
-    // Mouse follow effect
-    let mouseTimeout;
-    const handleMouseMove = (e) => {
-      if (mouseTimeout) {
-        window.cancelAnimationFrame(mouseTimeout);
-      }
-
-      mouseTimeout = window.requestAnimationFrame(() => {
-        const { clientX, clientY } = e;
-        gsap.to(gradientRef.current, {
-          x: clientX - window.innerWidth / 2,
-          y: clientY - window.innerHeight / 2,
-          duration: 2,
-          ease: "power3.out",
-        });
-      });
-    };
-
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
-      if (mouseTimeout) {
-        window.cancelAnimationFrame(mouseTimeout);
-      }
-    };
-  }, []);
-
   return (
     <div className="relative min-h-screen bg-[#0D1117] text-white overflow-hidden">
-      {/* Gradient Background */}
+      {/* Fixed Gradient Background */}
+      <CustomCursor />
       <div
-        ref={gradientRef}
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1200px] h-[1200px] opacity-30 blur-[120px]"
+        className="absolute top-0 left-0 w-full h-full opacity-30 blur-[120px] z-[-1]"
         style={{
           background:
             "radial-gradient(circle at center, purple, orange, green, blue)",
@@ -96,9 +41,11 @@ function HomePage() {
       />
 
       {/* Navbar */}
-      <nav
-        ref={headerRef}
-        className="relative z-10 flex items-center justify-center px-6 py-6 border-b md:justify-between md:px-12 md:ustify-between backdrop-blur-sm border-gray-800/50"
+      <motion.nav
+        initial={{ opacity: 0, y: -50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+        className="relative z-10 flex items-center justify-center px-6 py-6 border-b md:justify-between md:px-12 border-gray-800/50 backdrop-blur-sm"
       >
         <a
           href="/"
@@ -108,7 +55,7 @@ function HomePage() {
           AnkiEditor
         </a>
 
-        <div className="flex-col items-center hidden space-y-4 md:space-y-0 md:space-x-8 md:flex md:flex-row">
+        <div className="hidden md:flex md:flex-row md:space-x-8">
           <a href="/features" className="transition-colors hover:text-blue-400">
             Features
           </a>
@@ -116,7 +63,7 @@ function HomePage() {
             Docs
           </a>
           <a
-            href="/docs"
+            href="/get-started"
             className="px-6 py-2 transition-colors bg-blue-600 rounded-full hover:bg-blue-700"
           >
             Get Started
@@ -125,96 +72,87 @@ function HomePage() {
 
         <IoMdMenu
           onClick={() => setIsMobileShowMenu(!isMobileShowMenu)}
-          className="fixed top-0 right-0 block text-2xl duration-150 m-7 hover:scale-125 md:hidden"
+          className="fixed top-0 right-0 block text-2xl m-7 md:hidden"
         />
-      </nav>
+      </motion.nav>
 
       {/* Mobile Menu */}
       {isMobileShowMenu && (
-        <div className="fixed top-0 right-0 z-50 flex flex-col items-end h-screen py-20 pr-20 ml-20 -mr-5 duration-75 ease-in-out w-60 rounded-3xl bg-zinc-900 bg-black/50 backdrop-blur-sm">
+        <motion.div
+          initial={{ x: 300 }}
+          animate={{ x: 0 }}
+          transition={{ duration: 0.5 }}
+          className="fixed top-0 right-0 z-50 flex flex-col items-center w-64 h-full p-8 bg-zinc-900/90 backdrop-blur-lg"
+        >
           <IoMdMenu
-            onClick={() => setIsMobileShowMenu(!isMobileShowMenu)}
-            className="absolute top-0 left-0 block text-2xl duration-150 m-7 hover:scale-125 md:hidden"
+            onClick={() => setIsMobileShowMenu(false)}
+            className="absolute text-3xl cursor-pointer top-4 right-4"
           />
-          <div className="flex flex-col items-start justify-center gap-7">
-            <a
-              href="/features"
-              className="text-2xl transition-colors border-b-2 hover:text-blue-400"
-            >
+          <div className="flex flex-col gap-6 mt-10">
+            <a href="/features" className="text-xl hover:text-blue-400">
               Features
             </a>
-            <a
-              href="/docs"
-              className="text-2xl transition-colors border-b-2 hover:text-blue-400"
-            >
+            <a href="/docs" className="text-xl hover:text-blue-400">
               Docs
             </a>
-            <a
-              href="/docs"
-              className="text-2xl transition-colors border-b-2 hover:text-blue-400"
-            >
+            <a href="/get-started" className="text-xl hover:text-blue-400">
               Get Started
             </a>
           </div>
-        </div>
+        </motion.div>
       )}
 
       {/* Main Content */}
-      <main
-        ref={contentRef}
-        className="relative z-10 flex flex-col items-center justify-center min-h-[calc(100vh-80px)] px-6 py-12"
-      >
-        <h1 className="mb-6 text-5xl font-bold leading-tight text-center md:text-8xl">
+      <main className="relative z-10 flex flex-col items-center justify-center min-h-[calc(100vh-80px)] px-6 py-12">
+        <motion.h1
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1 }}
+          className="mb-6 text-5xl font-bold text-center md:text-8xl"
+        >
           The ANKI Code Editor
-        </h1>
+        </motion.h1>
 
-        <p className="max-w-2xl mb-12 font-mono text-lg text-center text-gray-400 md:text-xl">
-          Built to make you extraordinarily productive,
-          <br />
-          AnkiEditor is the best way to code on Mobile.
-        </p>
+        <motion.p
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="max-w-2xl mb-12 font-mono text-lg text-center text-gray-400 md:text-xl"
+        >
+          Built to make you extraordinarily productive, AnkiEditor is the best
+          way to code on Mobile.
+        </motion.p>
 
-        {/* Download Buttons */}
-        <div className="flex flex-col items-center gap-4 md:flex-row">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8 }}
+          className="flex flex-col items-center gap-4 md:flex-row"
+        >
           <a
             href="./ankieditor.apk"
             download="AnkiEditor.apk"
-            className="flex items-center gap-2 px-6 py-3 transition-colors border rounded-lg group bg-white/10 backdrop-blur hover:bg-white/20 border-white/20"
+            className="flex items-center gap-2 px-6 py-3 transition-colors rounded-lg bg-white/10 hover:bg-white/20"
           >
             <IoLogoAndroid className="text-2xl" />
             DOWNLOAD FOR ANDROID
           </a>
-
           <a
-            target="_blank"
             href="https://www.youtube.com/watch?v=X7RVmRd09zk"
-            className="flex items-center gap-2 px-6 py-3 transition-colors rounded-lg group hover:bg-white/10"
+            target="_blank"
+            className="flex items-center gap-2 px-6 py-3 transition-colors rounded-lg hover:bg-white/10"
           >
-            <svg
-              className="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"
-              />
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-              />
-            </svg>
             WATCH DEMO
           </a>
-        </div>
+        </motion.div>
 
-        {/* Code Editor Preview */}
-        <div className="w-full max-w-6xl mx-auto mt-16 overflow-hidden border border-gray-800 rounded-lg">
+        {/* Code Editor Preview Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="w-full max-w-6xl mx-auto mt-16 overflow-hidden border border-gray-800 rounded-lg"
+        >
           <div className="flex items-center justify-between p-2 bg-black/30 backdrop-blur">
             <div className="flex gap-2">
               <div className="w-3 h-3 bg-red-500 rounded-full"></div>
@@ -228,12 +166,11 @@ function HomePage() {
                 <button
                   key={key}
                   onClick={() => setActiveTab(key)}
-                  className={`flex items-center gap-2 px-4 py-2 rounded-md transition-colors
-                    ${
-                      activeTab === key
-                        ? "bg-white/10 text-white"
-                        : "text-gray-400 hover:text-white hover:bg-white/5"
-                    }`}
+                  className={`flex items-center gap-2 px-4 py-2 rounded-md transition-colors ${
+                    activeTab === key
+                      ? "bg-white/10 text-white"
+                      : "text-gray-400 hover:text-white hover:bg-white/5"
+                  }`}
                 >
                   {icon}
                   <span className="hidden text-sm md:block">{title}</span>
@@ -243,25 +180,30 @@ function HomePage() {
           </div>
 
           <div className="p-4 bg-black/20 backdrop-blur-xl md:p-8">
-            <div className="h-[200px] md:h-[700px] w-full">
-              <img
-                src={previewData[activeTab].image}
-                alt={`${previewData[activeTab].title} Preview`}
-                className="object-cover w-full transition-opacity duration-300 rounded-md"
-                loading="lazy"
-              />
-            </div>
+            <motion.img
+              key={activeTab}
+              src={previewData[activeTab].image}
+              alt={`${previewData[activeTab].title} Preview`}
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5 }}
+              className="object-cover w-full rounded-md"
+            />
           </div>
-        </div>
+        </motion.div>
 
-        <p className="max-w-4xl my-12 font-mono text-lg text-center text-gray-400 md:text-xl">
+        <motion.p
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="max-w-4xl my-12 font-mono text-lg text-center text-gray-400 md:text-xl"
+        >
           Anki Code is an excellent mobile code editor that stands out for its
           unique features. It provides users with a free subdomain and hosting,
           making it an ideal choice for developers who want to code and deploy
           projects directly from their mobile devices without incurring
-          additional costs. This combination of convenience and functionality
-          makes Anki Code one of the best code editors for mobile users.
-        </p>
+          additional costs.
+        </motion.p>
       </main>
     </div>
   );
